@@ -1,17 +1,18 @@
-import { createParamDecorator } from "@nestjs/common";
-import { User } from "./user.entity";
+/* import { createParamDecorator } from '@nestjs/common';
+import { User } from './user.entity';
 
 export const GetUser = createParamDecorator(
-  (data, req): User => {
-    return req.User;
-  }
+     (data, req): User => {
+          return req.User;
+     },
 );
+ */
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { User } from './user.entity';
 
-// import { createParamDecorator, ExecutionContext } from "@nestjs/common";
-
-// export const User = createParamDecorator(
-//   (data: unknown, ctx: ExecutionContext) => {
-//     const request = ctx.switchToHttp().getRequest();
-//     return request.user;
-//   }
-// );
+export const GetUser = createParamDecorator(
+     (data: any, ctx: ExecutionContext): User => {
+          const request = ctx.switchToHttp().getRequest();
+          return request.user;
+     },
+);
