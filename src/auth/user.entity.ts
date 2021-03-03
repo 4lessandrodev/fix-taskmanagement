@@ -1,35 +1,42 @@
 import {
-  BaseEntity,
-  PrimaryGeneratedColumn,
-  Column,
-  Entity,
-  Unique,
-  OneToMany,
-} from "typeorm";
-import * as bcrypt from "bcrypt";
+     BaseEntity,
+     PrimaryGeneratedColumn,
+     Column,
+     Entity,
+     Unique,
+     OneToMany,
+} from 'typeorm';
+import * as bcrypt from 'bcrypt';
 // import { type } from "os";
-import { Task } from "../tasks/task.entity";
+import { Task } from '../tasks/task.entity';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { FilterableField } from '@nestjs-query/query-graphql';
 
 @Entity()
-@Unique(["username"])
+@ObjectType()
+@Unique(['username'])
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+     @PrimaryGeneratedColumn()
+     @FilterableField()
+     id: number;
 
-  @Column()
-  username: string;
+     @Column()
+     @Field()
+     username: string;
 
-  @Column()
-  password: string;
+     @Column()
+     @Field()
+     password: string;
 
-  @Column()
-  salt: string;
+     @Column()
+     @Field()
+     salt: string;
 
-  @OneToMany((type) => Task, (task) => task.user)
-  tasks: Task[];
+     @OneToMany((type) => Task, (task) => task.user)
+     tasks: Task[];
 
-  async validatePassword(password: string): Promise<boolean> {
-    const hash = await bcrypt.hash(password, this.salt);
-    return hash === this.password;
-  }
+     async validatePassword(password: string): Promise<boolean> {
+          const hash = await bcrypt.hash(password, this.salt);
+          return hash === this.password;
+     }
 }

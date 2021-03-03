@@ -1,30 +1,39 @@
 import {
-  BaseEntity,
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-} from "typeorm";
-import { TaskStatus } from "./task-status.enum";
-import { User } from "../auth/user.entity";
+     BaseEntity,
+     Entity,
+     PrimaryGeneratedColumn,
+     Column,
+     ManyToOne,
+} from 'typeorm';
+import { TaskStatus } from './task-status.enum';
+import { User } from '../auth/user.entity';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { FilterableField } from '@nestjs-query/query-graphql';
 
 @Entity()
+@ObjectType()
 export class Task extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+     @Field(() => ID)
+     @PrimaryGeneratedColumn()
+     id: number;
 
-  @Column()
-  title: string;
+     @Column()
+     @FilterableField(() => String)
+     title: string;
 
-  @Column()
-  description: string;
+     @Column()
+     @Field()
+     description: string;
 
-  @Column()
-  status: TaskStatus;
+     @Column()
+     @Field()
+     status: TaskStatus;
 
-  @ManyToOne((type) => User, (user) => user.tasks)
-  user: User;
+     @ManyToOne((type) => User, (user) => user.tasks)
+     @Field()
+     user: User;
 
-    @Column()
-    userId: number;
+     @Column()
+     @Field()
+     userId: number;
 }
